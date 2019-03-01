@@ -11,7 +11,7 @@ interpreter titles and md blocks.
 2) You want to extract the code blocks specific to a given language. The result may be able to run. Stiill, you typically have to deal with 
    graphing outputs in a non interactive way when you move from a notebook to a script. You will have to handle this yourself. 
 
-## Limitations:
+## Limitations
 * You may have to customize the interpreters list for your target languages and for 'all'
 * Change the default Zeppelin notebook directory if it does not match yours
 
@@ -23,7 +23,7 @@ Add this under Zeppelin menu with an interactive list of intepretersd to include
 * python ./zep2code.py 2E27K8X9M /tmp/test3.r   r      -> produces a .r  file runable in interactive mode
 * python ./zep2code.py 2E27K8X9M /tmp/test3.all all    -> produces a likely not runable file useful for checking code differences
 
-## Author(s):
+## Author(s)
 Initial idea from https://github.com/sat28/zeppelin_notebook_to_script/blob/master/zeppelin_to_script.py
 Then all improvements by G. Demaneuf.
 

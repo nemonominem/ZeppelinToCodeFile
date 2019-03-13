@@ -1,5 +1,5 @@
 #! /bin/bash
 
-SCRIPTS=/data/disk1/776859/Shared/Python/scripts
+SCRIPTS=[WHERE YOU PUT ZEP2CODE.PY]
 
 python $SCRIPTS/zep2code.py $@

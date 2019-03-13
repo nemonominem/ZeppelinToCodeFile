@@ -48,7 +48,7 @@ def exportNotebook( infile,
         what   = ['sql', 'spark-nlp.sql', 'spark.sql'] 
     elif what  == 'sh':
         what   = ['sh', 'sh_zepp']
-    else:
+    elif what != 'all':
         print("The target interpreter should be one of: python | scala | r | sql | sh")
         print("Do 'python zep2code.py' to get help\n")
 

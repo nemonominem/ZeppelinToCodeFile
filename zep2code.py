@@ -129,8 +129,6 @@ def exportNotebook( infile,
 ############################################################################
 
 if __name__ == '__main__':
-
-
     # Help
     if len(sys.argv) == 1:
         help(exportNotebook)

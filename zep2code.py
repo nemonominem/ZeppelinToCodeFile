@@ -25,8 +25,13 @@ def exportNotebook( infile,
     Arguments:
     - infile        : infile, either full pathname or just zeppelin notebook ID as in /opt/zeppelin/notebooks/ID/note.json
     - outfile       : output file
-    - what          : an iterable of interpreters to include without the %
+    - what          : python | scala | r | sql | sh
     - mdascomment   : whether to use md blocks as comments
+
+    Examples:
+    - python ./zep2code.py 2E27K8X9M python /tmp/test3.py   -> produces a .py file runable in interactive mode
+    - python ./zep2code.py 2E27K8X9M r      /tmp/test3.r    -> produces a .r  file runable in interactive mode
+    - python ./zep2code.py 2E27K8X9M all    /tmp/test3.all  -> produces a likely not runable file useful for checking code differences
     """
 
     # Process arguments
@@ -43,10 +48,17 @@ def exportNotebook( infile,
         what   = ['sql', 'spark-nlp.sql', 'spark.sql'] 
     elif what  == 'sh':
         what   = ['sh', 'sh_zepp']
+    else:
+        print("The target interpreter should be one of: python | scala | r | sql | sh")
+        print("Do 'python zep2code.py' to get help\n")
 
+        raise Exception("Unknown target interpreter")
+
+    # Tell what you are doing
     if debug:
-        print("0: {}".format(what))
-    
+        print("Processing {} for {}".format(infile, what))
+        print("Output: {} ".format(outfile))
+
     # Load notebook
     notebook = json.load(codecs.open(infile, 'r', 'utf-8-sig'))
     
@@ -111,28 +123,54 @@ def exportNotebook( infile,
 ## Can be run directlty as a scrip over a notebook
 ##
 ## Usage Cases:
-## - python ./zep2code.py 2E27K8X9M /tmp/test3.py  python -> produces a .py file runable in interactive mode
-## - python ./zep2code.py 2E27K8X9M /tmp/test3.r   r      -> produces a .r  file runable in interactive mode
-## - python ./zep2code.py 2E27K8X9M /tmp/test3.all all    -> produces a likely not runable file useful for checking code differences
+## - python ./zep2code.py 2E27K8X9M python /tmp/test3.py   -> produces a .py file runable in interactive mode
+## - python ./zep2code.py 2E27K8X9M r      /tmp/test3.r    -> produces a .r  file runable in interactive mode
+## - python ./zep2code.py 2E27K8X9M all    /tmp/test3.all  -> produces a likely not runable file useful for checking code differences
 ############################################################################
 
 if __name__ == '__main__':
+
+
+    # Help
+    if len(sys.argv) == 1:
+        help(exportNotebook)
+        import sys; sys.exit(0)
 
     # Check arguments
     if len(sys.argv) > 4:
         raise Exception("no more than 3 arguments: infile, outfile, list of interprenters")
 
+    # File signature
+    filesig = {'r': 'r', 'python': 'py', 'all': 'all'}
+
     # Get input / output
-    if sys.argv[1].find('/') == -1:
-        # No '/' in name => directory not given, so use defaults
+    if (sys.argv[1].find('/') == -1) and (sys.argv[1].find('json') == -1):
+
+        # No '/' in name => directory not given, so use defaults location for JSON file given by key
         infile     = "/opt/zeppelin/notebook/" + sys.argv[1] + "/note.json"
+
+        if len(sys.argv) == 4:
+            # Output file provided
+            outfile        = sys.argv[3]
+        else:
+            # No output file provided
+            outfile        = "{}.{}".format(sys.argv[1], filesig[sys.argv[2]])
     else:
+        # An explicit json file given
         infile     = sys.argv[1]
 
-    outfile        = sys.argv[2]
+        if len(sys.argv) == 4:
+            # Output file provided
+            outfile        = sys.argv[3]
+        else:
+            # No output file provided
+            if (sys.argv[1].find('/') == -1):
+                # Input is without dir
+                outfile        = "{}.{}".format(sys.argv[1][0:-5], filesig[sys.argv[2]])
+            else:
+                # Input is with dir
+                k              = sys.argv[1].rfind('/')
+                outfile        = "{}.{}".format(sys.argv[1][k:-5], filesig[sys.argv[2]])
 
     # Export Notebook
-    if len(sys.argv) == 4:
-        exportNotebook(infile, outfile, sys.argv[3])
-    else:
-        exportNotebook(infile, outfile)
+    exportNotebook(infile, outfile, sys.argv[2], debug=False)

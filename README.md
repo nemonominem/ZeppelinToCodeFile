@@ -15,7 +15,7 @@ interpreter titles and md blocks.
 * You may have to customize the interpreters list for your target languages and for 'all'
 * Change the default Zeppelin notebook directory if it does not match yours
 
-## Posible development
+## Possible developments
 Add this under Zeppelin menu with an interactive list of intepretersd to include
 
 ## Examples

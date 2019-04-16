@@ -19,6 +19,7 @@ interpreter titles and md blocks.
 Add this under Zeppelin menu with an interactive list of intepretersd to include
 
 ## Examples
+* zep2code all  *.json                                 -> produces a file for each .json notebook into a code subfolder, add them to git
 * python ./zep2code.py 2E27K8X9M /tmp/test3.py  python -> produces a .py file runable in interactive mode
 * python ./zep2code.py 2E27K8X9M /tmp/test3.r   r      -> produces a .r  file runable in interactive mode
 * python ./zep2code.py 2E27K8X9M /tmp/test3.all all    -> produces a likely not runable file useful for checking code differences

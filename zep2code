@@ -1,5 +1,52 @@
-#! /bin/bash
+#!/bin/bash
 
-SCRIPTS=[WHERE YOU PUT ZEP2CODE.PY]
+####################################################################
+## A simple script to convert notebooks
+##
+## Examples:
+## - zep2code all file1.json file2.json
+## - zep2code all *.json
+## - zep2code py *.json
+## - zep2code r *.json
+##
+## Features:
+## - Accepts a list of files or a pattern (*)
+## - Creates the code directory ifnot there
+##
+## Author:
+## - Gilles DEMANEUF
+####################################################################
 
-python $SCRIPTS/zep2code.py $@
+####################################################################
+## Functions
+####################################################################
+
+do_file () {
+    echo 'Processing:' $2
+    python $SCRIPTS/zep2code.py $2 $1 "code/${2%.json}.$1"
+    git add "code/${2%.json}.$1"
+}
+
+test_dir () {
+    mkdir -p $1
+}
+
+main () {
+    echo 'conversion mode:' $1
+
+    test_dir code
+
+    for f in ${@:2}
+    do
+        do_file $1 $f
+    done
+}
+
+####################################################################
+## Main
+####################################################################
+
+# Please change this to your actual directory
+SCRIPTS=_THIS_DIRECTORY_
+
+main $@

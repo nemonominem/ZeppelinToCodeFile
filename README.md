@@ -2,7 +2,7 @@
 This is a simple utility to extract nicely formated code from a Zeppelin notebook
 
 ## How does it work
-The utility extract the code for the given interpreters and tries to nicdely format comments based on Zeppelin
+The utility extract the code for the given interpreters and tries to nicely format comments based on Zeppelin
 interpreter titles and md blocks.
 
 ## Usage Cases
